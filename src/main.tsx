@@ -6,6 +6,8 @@ import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Hero from "./app/hero.tsx";
 import RootLayout from "./app/layout.tsx";
+import { ThemeProvider } from "./components/theme-provider.tsx";
+import { ModeToggle } from "./components/mode-toggle.tsx";
 
 const router = createBrowserRouter([
   {
@@ -20,8 +22,13 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <RootLayout>
-      <RouterProvider router={router} />
-    </RootLayout>
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <RootLayout>
+        <div className="absolute top-4 right-4 z-10">
+          <ModeToggle />
+        </div>
+        <RouterProvider router={router} />
+      </RootLayout>
+    </ThemeProvider>
   </StrictMode>
 );

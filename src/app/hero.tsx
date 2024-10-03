@@ -8,6 +8,7 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import TextareaForm from "./textAreaForm";
 import { toast } from "@/hooks/use-toast";
 import { Separator } from "@/components/ui/separator";
+import { ModeToggle } from "@/components/mode-toggle";
 
 const Hero = () => {
   const [data, setData] = useState([]); // Store the entire data set
@@ -131,7 +132,7 @@ const Hero = () => {
   return (
     <div className="flex flex-col justify-center items-center h-screen w-full relative gap-10 ">
       {/* User information */}
-      <div className="flex flex-row justify-center items-center gap-4 absolute top-4 left-4">
+      <div className="flex flex-row justify-center items-center gap-4 left-4 absolute top-4   ">
         <Avatar>
           <AvatarImage src="https://github.com/shadcn.png" />
         </Avatar>
