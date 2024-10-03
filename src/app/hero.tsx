@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { EnvelopeOpenIcon } from "@radix-ui/react-icons";
 import { MdDeleteOutline } from "react-icons/md";
@@ -8,18 +8,21 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import TextareaForm from "./textAreaForm";
 import { toast } from "@/hooks/use-toast";
 import { Separator } from "@/components/ui/separator";
-import { ModeToggle } from "@/components/mode-toggle";
 
 const Hero = () => {
-  const [data, setData] = useState([]); // Store the entire data set
+  const [data, setData] =
+    useState<{ original: string; translated: string }[]>(); // Store the entire data set
   const [orText, setOrText] = useState(""); // Original text
   const [trText, setTrText] = useState(""); // Translated text
+  const [counter, setCounter] = useState(0); // personal counter
 
   const [modOr, setModOr] = useState(false);
   const [modTr, setModTr] = useState(false);
   const location = useLocation();
   const user = location.state?.user || "Guest";
   const [currentIndex, setCurrentIndex] = useState(0); // To track the current row
+  const [confirmButtonDisabled, setConfirmButtonDisabled] = useState(false);
+  const [deleteButtonDisabled, setDeleteButtonDisabled] = useState(false);
 
   // Load data from JSON file
   const fetchData = async () => {
@@ -33,16 +36,21 @@ const Hero = () => {
       console.error("Error fetching data: ", error);
     }
   };
+  // ----------------------------------------------------------------------------------------------------------
 
   // Fetch data on component mount
   useEffect(() => {
     fetchData();
   }, []);
 
+  // ------------------------------------------------CONFIRM----------------------------------------------------------
+
   // Function to handle Confirm and fetch the next row
   const handleConfirm = () => {
     // Update the current row with the new values
-    const updatedData = [...data];
+    const updatedData: { original: string; translated: string }[] = [
+      ...(data as []),
+    ];
     updatedData[currentIndex] = {
       original: orText,
       translated: trText,
@@ -55,8 +63,8 @@ const Hero = () => {
     toast({
       title: "You submitted this expression:",
       description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">
+        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4 dark:bg-accent-foreground ">
+          <code className="text-white dark:text-black ">
             {JSON.stringify(
               { "Original Text": orText, "Translated Text": trText },
               null,
@@ -73,10 +81,19 @@ const Hero = () => {
       setCurrentIndex(nextIndex);
       setOrText(updatedData[nextIndex].original);
       setTrText(updatedData[nextIndex].translated);
+      setCounter(counter + 1);
     } else {
+      setCounter(counter + 1);
+      setOrText("");
+      setTrText("");
+      // setCurrentIndex(0);
+      // Deactivate the confirm and delete buttons
+      setConfirmButtonDisabled(true); // Disable the Confirm button
+      setDeleteButtonDisabled(true); // Disable the Delete button
       alert("No more rows left to display");
     }
   };
+  // ----------------------------------------------------------------------------------------------------------
 
   // Function to handle text modification
   function handleModOr() {
@@ -85,39 +102,50 @@ const Hero = () => {
   function handleModTr() {
     setModTr(true);
   }
+  // -------------------------------------------DELETE---------------------------------------------------------------
 
   // Simulated delete operation
   const handleDelete = async () => {
     // Create a copy of the current data
-    const updatedData = [...data];
+    const updatedData: {
+      original: string;
+      translated: string;
+    }[] = [...(data as [])];
 
-    // Remove the current row
-    updatedData.splice(currentIndex, 1);
+    // Remove the current item
+    const updatedDataAfterDeletion = updatedData.filter(
+      (_, index) => index !== currentIndex
+    );
+    setCounter(counter + 1);
 
-    // Update the state with the new data
-    setData(updatedData);
-    console.log(updatedData);
-
-    // Move to the next row if available
+    // Handle edge cases when deleting the last item
     const nextIndex =
-      currentIndex < updatedData.length ? currentIndex : currentIndex - 1;
+      currentIndex < updatedDataAfterDeletion.length
+        ? currentIndex
+        : currentIndex - 1;
 
-    if (nextIndex >= 0) {
-      setCurrentIndex(nextIndex);
-      setOrText(updatedData[nextIndex].original);
-      setTrText(updatedData[nextIndex].translated);
+    setData(updatedDataAfterDeletion);
+
+    if (updatedDataAfterDeletion.length > 0 && nextIndex >= currentIndex) {
+      setCurrentIndex(nextIndex); // Move to the correct index after deletion
+      setOrText(updatedDataAfterDeletion[nextIndex].original);
+      setTrText(updatedDataAfterDeletion[nextIndex].translated);
     } else {
       alert("No more rows left to display");
-      setOrText(""); // Clear the original text
-      setTrText(""); // Clear the translated text
+      setOrText("");
+      setTrText("");
+      setCurrentIndex(0);
+      // Deactivate the confirm and delete buttons
+      setConfirmButtonDisabled(true); // Disable the Confirm button
+      setDeleteButtonDisabled(true); // Disable the Delete button
     }
 
     // Display a toast message confirming deletion
     toast({
       title: "You Deleted this expression:",
       description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">
+        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4 dark:bg-accent-foreground ">
+          <code className="text-white dark:text-black ">
             {JSON.stringify(
               { "Original Text": orText, "Translated Text": trText },
               null,
@@ -130,7 +158,7 @@ const Hero = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center h-screen w-full relative gap-10 ">
+    <div className="flex flex-col justify-center items-center h-screen w-full relative gap-10  light:text-[#121212] dark:text-[#EFEFEF] dark:bg-[#222831]">
       {/* User information */}
       <div className="flex flex-row justify-center items-center gap-4 left-4 absolute top-4   ">
         <Avatar>
@@ -139,7 +167,8 @@ const Hero = () => {
         <h1 className="text-lg font-semibold">{user}</h1>
       </div>
 
-      <div className="rounded-lg border shadow-md flex flex-col  p-8 ">
+      <div className="relative rounded-lg border border-[#EFEFEF] shadow-md flex flex-col  p-8 ">
+        <p className="absolute top-2 right-4">You corrected {counter} rows</p>
         {/* Original text */}
         <div className="flex flex-col justify-center items-start gap-8 w-[650px] ">
           <h1 className="scroll-m-20 text-2xl font-extrabold tracking-tight lg:text-3xl">
@@ -163,14 +192,14 @@ const Hero = () => {
                 variant="outline"
                 size="icon"
                 onClick={handleModOr}
-                className="h-9 w-9"
+                className="h-9 w-9 dark:bg-[#222831] border dark:border-[#EFEFEF] hover:dark:bg-[#37404e]"
               >
                 <LuPencil className="h-4 w-4" />
               </Button>
             )}
           </div>
         </div>
-        <Separator className="my-4 w-[650px]" />
+        <Separator className="my-4 w-[650px] bg-[#EFEFEF]" />
 
         {/* Translated text */}
         <div className="flex flex-col justify-center items-start gap-8 w-[650px] ">
@@ -195,7 +224,7 @@ const Hero = () => {
                 variant="outline"
                 size="icon"
                 onClick={handleModTr}
-                className="h-9 w-9"
+                className="h-9 w-9 dark:bg-[#222831] border dark:border-[#EFEFEF] hover:dark:bg-[#37404e]"
               >
                 <LuPencil className="h-4 w-4" />
               </Button>
@@ -207,14 +236,15 @@ const Hero = () => {
       {/* Buttons */}
       <div className="flex gap-10">
         <Button
-          className="bg-green-600 text-white hover:bg-green-700"
+          disabled={confirmButtonDisabled}
+          className="bg-[#30475E] text-white hover:bg-[#426282] dark:bg-[#205375] dark:hover:bg-[#164463]"
           onClick={handleConfirm}
         >
           <EnvelopeOpenIcon className="mr-2 h-4 w-4" /> Confirm
         </Button>
         <Button
-          variant="destructive"
-          className="text-white hover:bg-red-600"
+          disabled={deleteButtonDisabled}
+          className="text-white bg-[#F05454] hover:bg-[#f86b6b] dark:bg-[#F66B0E] dark:hover:bg-[#f66b0ed8]"
           onClick={handleDelete}
         >
           <MdDeleteOutline className="mr-2 h-4 w-4" /> Delete

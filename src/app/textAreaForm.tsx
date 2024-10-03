@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button";
 
 import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 
 interface TextareaProps {
@@ -17,7 +16,6 @@ const TextareaForm: React.FC<TextareaProps> = ({
   setOrText,
   setModOr,
 }) => {
-  const { toast } = useToast();
   // Set initial default value
   const [text, setText] = useState(Text);
 
@@ -41,10 +39,10 @@ const TextareaForm: React.FC<TextareaProps> = ({
   }
 
   return (
-    <form className="w-full space-y-6">
+    <form className="w-full space-y-6 ">
       <Textarea
         placeholder="..."
-        className="resize-none"
+        className="resize-none dark:border-[#EFEFEF]"
         value={text} // Bind the state to the value prop
         onChange={handleChange} // Update the state on change
       />
