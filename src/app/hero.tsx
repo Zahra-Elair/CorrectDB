@@ -7,6 +7,7 @@ import { LuPencil } from "react-icons/lu";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import TextareaForm from "./textAreaForm";
 import { toast } from "@/hooks/use-toast";
+import { Separator } from "@/components/ui/separator";
 
 const Hero = () => {
   const [data, setData] = useState([]); // Store the entire data set
@@ -137,65 +138,68 @@ const Hero = () => {
         <h1 className="text-lg font-semibold">{user}</h1>
       </div>
 
-      {/* Original text */}
-      <div className="flex flex-col justify-center items-start gap-4 w-[650px]">
-        <h1 className="scroll-m-20 text-2xl font-extrabold tracking-tight lg:text-3xl">
-          Original Text :
-        </h1>
-        <div className="flex justify-center pl-2 items-start gap-4 ">
-          <div className="w-[600px] h-[150px]">
+      <div className="rounded-lg border shadow-md flex flex-col  p-8 ">
+        {/* Original text */}
+        <div className="flex flex-col justify-center items-start gap-8 w-[650px] ">
+          <h1 className="scroll-m-20 text-2xl font-extrabold tracking-tight lg:text-3xl">
+            Original Text :
+          </h1>
+          <div className="flex justify-center pl-2 items-start gap-4 ">
+            <div className="w-[600px] h-[150px]">
+              {!modOr && (
+                <p className="text-muted-foreground text-lg">{orText}</p>
+              )}
+              {modOr && (
+                <TextareaForm
+                  Text={orText}
+                  setOrText={setOrText}
+                  setModOr={setModOr}
+                />
+              )}
+            </div>
             {!modOr && (
-              <p className="text-muted-foreground text-lg">{orText}</p>
-            )}
-            {modOr && (
-              <TextareaForm
-                Text={orText}
-                setOrText={setOrText}
-                setModOr={setModOr}
-              />
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={handleModOr}
+                className="h-9 w-9"
+              >
+                <LuPencil className="h-4 w-4" />
+              </Button>
             )}
           </div>
-          {!modOr && (
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={handleModOr}
-              className="h-9 w-9"
-            >
-              <LuPencil className="h-4 w-4" />
-            </Button>
-          )}
         </div>
-      </div>
+        <Separator className="my-4 w-[650px]" />
 
-      {/* Translated text */}
-      <div className="flex flex-col justify-center items-start gap-4 w-[650px]">
-        <h1 className="scroll-m-20 text-2xl font-extrabold tracking-tight lg:text-3xl">
-          Translated Text :
-        </h1>
-        <div className="flex justify-center pl-2 items-start gap-4 ">
-          <div className="w-[600px] h-[150px]">
+        {/* Translated text */}
+        <div className="flex flex-col justify-center items-start gap-8 w-[650px] ">
+          <h1 className="scroll-m-20 text-2xl font-extrabold tracking-tight lg:text-3xl">
+            Translated Text :
+          </h1>
+          <div className="flex justify-center pl-2 items-start gap-4 ">
+            <div className="w-[600px] h-[150px]">
+              {!modTr && (
+                <p className="text-muted-foreground text-lg">{trText}</p>
+              )}
+              {modTr && (
+                <TextareaForm
+                  Text={trText}
+                  setOrText={setTrText}
+                  setModOr={setModTr}
+                />
+              )}
+            </div>
             {!modTr && (
-              <p className="text-muted-foreground text-lg">{trText}</p>
-            )}
-            {modTr && (
-              <TextareaForm
-                Text={trText}
-                setOrText={setTrText}
-                setModOr={setModTr}
-              />
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={handleModTr}
+                className="h-9 w-9"
+              >
+                <LuPencil className="h-4 w-4" />
+              </Button>
             )}
           </div>
-          {!modTr && (
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={handleModTr}
-              className="h-9 w-9"
-            >
-              <LuPencil className="h-4 w-4" />
-            </Button>
-          )}
         </div>
       </div>
 
