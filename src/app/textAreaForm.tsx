@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
+import { FaCheck } from "react-icons/fa6";
 
 interface TextareaProps {
   Text: string;
@@ -39,15 +40,20 @@ const TextareaForm: React.FC<TextareaProps> = ({
   }
 
   return (
-    <form className="w-full space-y-6 ">
+    <form className="w-full  flex gap-2 justify-between items-center  ">
       <Textarea
         placeholder="..."
-        className="resize-none dark:border-[#EFEFEF]"
+        className="resize-none dark:border-[#EFEFEF] w-full"
         value={text} // Bind the state to the value prop
         onChange={handleChange} // Update the state on change
       />
-      <Button type="button" onClick={handleSubmit}>
-        Submit
+      <Button
+        variant="outline"
+        size="icon"
+        onClick={handleSubmit}
+        className="h-9 w-9  border dark:border-[#EFEFEF] hover:dark:bg-[#37404e]"
+      >
+        <FaCheck className="h-4 w-4" />
       </Button>
     </form>
   );

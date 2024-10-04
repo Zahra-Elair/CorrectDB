@@ -22,36 +22,45 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const FormSchema = z.object({
   user: z.string({
     required_error: "Please select a user.",
   }),
 });
-interface FormProps {
-  // user: string;
-  setUser: (user: string) => void;
-}
 
-const SelectForm: React.FC<FormProps> = ({ setUser }) => {
+const SelectForm = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
+  const [user, setUser] = useState("");
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
 
+  // Use useEffect to navigate when the user state is updated
+  useEffect(() => {
+    console.log(user);
+
+    if (user) {
+      navigate("/db", { state: { user } });
+      toast({
+        title: `Welcome, ${user} ! 🎉`,
+      });
+    }
+  }, [user, navigate, toast]);
+
   function onSubmit(data: z.infer<typeof FormSchema>) {
     setUser(data.user);
-    navigate("/db", { state: { user: data.user } }); // Pass the user in the state
-    toast({
-      title: `Welcome, ${data.user} ! 🎉`,
-    });
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6 ">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="w-2/3  space-y-6 "
+      >
         <FormField
           control={form.control}
           name="user"

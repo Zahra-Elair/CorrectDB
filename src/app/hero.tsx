@@ -63,7 +63,7 @@ const Hero = () => {
     toast({
       title: "You submitted this expression:",
       description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4 dark:bg-accent-foreground ">
+        <pre className="mt-2 w-[340px] rounded-md bg-[#37404e] p-4 dark:bg-accent-foreground ">
           <code className="text-white dark:text-black ">
             {JSON.stringify(
               { "Original Text": orText, "Translated Text": trText },
@@ -158,7 +158,7 @@ const Hero = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center h-screen w-full relative gap-10  light:text-[#121212] dark:text-[#EFEFEF] dark:bg-[#222831]">
+    <div className="flex flex-col justify-center items-center w-full  h-screen gap-10  light:text-[#121212] ">
       {/* User information */}
       <div className="flex flex-row justify-center items-center gap-4 left-4 absolute top-4   ">
         <Avatar>
@@ -167,17 +167,24 @@ const Hero = () => {
         <h1 className="text-lg font-semibold">{user}</h1>
       </div>
 
-      <div className="relative rounded-lg border border-[#EFEFEF] shadow-md flex flex-col  p-8 ">
-        <p className="absolute top-2 right-4">You corrected {counter} rows</p>
+      {/* ------------------------------------------------------------------------------------------------------------- */}
+      {/* ------------------------------------------------------------------------------------------------------------- */}
+
+      <div className="relative flex flex-col justify-center items-center rounded-lg border border-[#EFEFEF] shadow-md w-5/6 lg:w-3/6   px-6 py-4 lg:py-6">
+        <p className="absolute top-[-30px] right-4">
+          You corrected {counter} rows
+        </p>
         {/* Original text */}
-        <div className="flex flex-col justify-center items-start gap-8 w-[650px] ">
-          <h1 className="scroll-m-20 text-2xl font-extrabold tracking-tight lg:text-3xl">
+        <div className="flex flex-col justify-center items-start gap-10  w-full">
+          <h1 className="scroll-m-20 text-lg md:text-2xl font-extrabold tracking-tight lg:text-3xl">
             Original Text :
           </h1>
-          <div className="flex justify-center pl-2 items-start gap-4 ">
-            <div className="w-[600px] h-[150px]">
+          <div className="flex justify-between px-2 items-center  w-full ">
+            <div className="w-full">
               {!modOr && (
-                <p className="text-muted-foreground text-lg">{orText}</p>
+                <p className="text-muted-foreground text-lg min-h-[60px]">
+                  {orText}
+                </p>
               )}
               {modOr && (
                 <TextareaForm
@@ -192,24 +199,29 @@ const Hero = () => {
                 variant="outline"
                 size="icon"
                 onClick={handleModOr}
-                className="h-9 w-9 dark:bg-[#222831] border dark:border-[#EFEFEF] hover:dark:bg-[#37404e]"
+                className="h-9 w-9  border dark:border-[#EFEFEF] hover:dark:bg-[#37404e]"
               >
                 <LuPencil className="h-4 w-4" />
               </Button>
             )}
           </div>
         </div>
-        <Separator className="my-4 w-[650px] bg-[#EFEFEF]" />
+        <Separator className=" w-full dark:bg-[#37404e] my-6" />
+
+        {/* ------------------------------------------------------------------------------------------------------------- */}
+        {/* ------------------------------------------------------------------------------------------------------------- */}
 
         {/* Translated text */}
-        <div className="flex flex-col justify-center items-start gap-8 w-[650px] ">
-          <h1 className="scroll-m-20 text-2xl font-extrabold tracking-tight lg:text-3xl">
+        <div className="flex flex-col justify-center items-start gap-10  w-full">
+          <h1 className="scroll-m-20 text-lg md:text-2xl font-extrabold tracking-tight lg:text-3xl">
             Translated Text :
           </h1>
-          <div className="flex justify-center pl-2 items-start gap-4 ">
-            <div className="w-[600px] h-[150px]">
+          <div className="flex justify-between px-2 items-center  w-full ">
+            <div className="w-full">
               {!modTr && (
-                <p className="text-muted-foreground text-lg">{trText}</p>
+                <p className="text-muted-foreground text-lg min-h-[60px]">
+                  {trText}
+                </p>
               )}
               {modTr && (
                 <TextareaForm
@@ -224,7 +236,7 @@ const Hero = () => {
                 variant="outline"
                 size="icon"
                 onClick={handleModTr}
-                className="h-9 w-9 dark:bg-[#222831] border dark:border-[#EFEFEF] hover:dark:bg-[#37404e]"
+                className="h-9 w-9   border dark:border-[#EFEFEF] hover:dark:bg-[#37404e]"
               >
                 <LuPencil className="h-4 w-4" />
               </Button>
@@ -233,8 +245,11 @@ const Hero = () => {
         </div>
       </div>
 
+      {/* ------------------------------------------------------------------------------------------------------------- */}
+      {/* ------------------------------------------------------------------------------------------------------------- */}
+
       {/* Buttons */}
-      <div className="flex gap-10">
+      <div className="flex  w-full justify-center items-center gap-6 md:gap-10 ">
         <Button
           disabled={confirmButtonDisabled}
           className="bg-[#30475E] text-white hover:bg-[#426282] dark:bg-[#205375] dark:hover:bg-[#164463]"

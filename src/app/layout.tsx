@@ -9,7 +9,7 @@ export default function RootLayout({
     <html lang="en">
       <head />
       <body>
-        <main>{children}</main>
+        <main className="min-h-screen">{children}</main>
         <Toaster />
       </body>
     </html>
