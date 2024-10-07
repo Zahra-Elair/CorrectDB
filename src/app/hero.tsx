@@ -23,6 +23,7 @@ const Hero = () => {
   const [currentIndex, setCurrentIndex] = useState(0); // To track the current row
   const [confirmButtonDisabled, setConfirmButtonDisabled] = useState(false);
   const [deleteButtonDisabled, setDeleteButtonDisabled] = useState(false);
+  const [tnText, setTnText] = useState("عسلاما");
 
   // Load data from JSON file
   const fetchData = async () => {
@@ -66,7 +67,7 @@ const Hero = () => {
         <pre className="mt-2 w-[340px] rounded-md bg-[#37404e] p-4 dark:bg-accent-foreground ">
           <code className="text-white dark:text-black ">
             {JSON.stringify(
-              { "Original Text": orText, "Translated Text": trText },
+              { "Original Text": orText, "Translated Text": tnText },
               null,
               2
             )}
@@ -144,10 +145,10 @@ const Hero = () => {
     toast({
       title: "You Deleted this expression:",
       description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4 dark:bg-accent-foreground ">
+        <pre className="mt-2 w-[340px] rounded-md bg-[#37404e] p-4 dark:bg-foreground ">
           <code className="text-white dark:text-black ">
             {JSON.stringify(
-              { "Original Text": orText, "Translated Text": trText },
+              { "Original Text": orText, "Translated Text": tnText },
               null,
               2
             )}
@@ -179,18 +180,20 @@ const Hero = () => {
           <h1 className="scroll-m-20 text-lg md:text-2xl font-extrabold tracking-tight lg:text-3xl">
             Original Text :
           </h1>
-          <div className="flex justify-between px-2 items-center  w-full ">
+          <div className="flex justify-between gap-4 px-2 items-center  w-full ">
             <div className="w-full">
               {!modOr && (
-                <p className="text-muted-foreground text-lg min-h-[60px]">
+                <p className="text-muted-foreground text-lg h-[60px] overflow-y-auto  ">
                   {orText}
                 </p>
               )}
               {modOr && (
                 <TextareaForm
+                  type="or"
                   Text={orText}
                   setOrText={setOrText}
                   setModOr={setModOr}
+                  setTnText={setTnText}
                 />
               )}
             </div>
@@ -216,19 +219,31 @@ const Hero = () => {
           <h1 className="scroll-m-20 text-lg md:text-2xl font-extrabold tracking-tight lg:text-3xl">
             Translated Text :
           </h1>
-          <div className="flex justify-between px-2 items-center  w-full ">
+          <div className="flex justify-between gap-4 px-2 items-center  w-full  ">
             <div className="w-full">
               {!modTr && (
-                <p className="text-muted-foreground text-lg min-h-[60px]">
-                  {trText}
-                </p>
+                <div className="flex flex-col w-full ">
+                  <p className="text-muted-foreground text-lg  h-[60px] overflow-y-auto ">
+                    {trText}
+                  </p>
+                  <p className="text-muted-foreground mr-2  text-right ">
+                    {tnText}
+                  </p>
+                </div>
               )}
               {modTr && (
-                <TextareaForm
-                  Text={trText}
-                  setOrText={setTrText}
-                  setModOr={setModTr}
-                />
+                <div className="flex flex-col w-full   gap-2">
+                  <TextareaForm
+                    type="tr"
+                    Text={trText}
+                    setOrText={setTrText}
+                    setModOr={setModTr}
+                    setTnText={setTnText}
+                  />
+                  <p className="text-muted-foreground mr-16  text-right ">
+                    {tnText}
+                  </p>
+                </div>
               )}
             </div>
             {!modTr && (

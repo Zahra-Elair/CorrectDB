@@ -5,56 +5,86 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import { FaCheck } from "react-icons/fa6";
+import { TbReload } from "react-icons/tb";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface TextareaProps {
+  type: string;
   Text: string;
   setOrText: (orText: string) => void;
   setModOr: (modOr: boolean) => void;
+  setTnText: (tnText: string) => void;
 }
 
 const TextareaForm: React.FC<TextareaProps> = ({
+  type,
   Text,
   setOrText,
   setModOr,
+  setTnText,
 }) => {
-  // Set initial default value
   const [text, setText] = useState(Text);
 
-  // Handle change event for TextArea
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setText(event.target.value); // Update the state with the new value
+    setText(event.target.value);
   };
 
   function handleSubmit(event: React.FormEvent) {
-    event.preventDefault(); // Prevent default form submission behavior
+    event.preventDefault();
     setOrText(text); // Call the parent state setter to update the original text
     setModOr(false);
-    // toast({
-    //   title: "You submitted this text:",
-    //   description: (
-    //     <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-    //       <code className="text-white">{JSON.stringify(text, null, 2)}</code>
-    //     </pre>
-    //   ),
-    // });
+  }
+  function handleReload(event: React.FormEvent) {
+    event.preventDefault();
+    setTnText("عسلامة");
   }
 
   return (
     <form className="w-full  flex gap-2 justify-between items-center  ">
       <Textarea
         placeholder="..."
-        className="resize-none dark:border-[#EFEFEF] w-full"
+        className="resize-none dark:border-[#EFEFEF] w-full "
         value={text} // Bind the state to the value prop
         onChange={handleChange} // Update the state on change
       />
-      <Button
-        variant="outline"
-        size="icon"
-        onClick={handleSubmit}
-        className="h-9 w-9  border dark:border-[#EFEFEF] hover:dark:bg-[#37404e]"
-      >
-        <FaCheck className="h-4 w-4" />
-      </Button>
+
+      {/* buttons */}
+      <div className="flex flex-col gap-2">
+        {/* submit button */}
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={handleSubmit}
+          className="h-9 w-9  border dark:border-[#EFEFEF] hover:dark:bg-[#37404e]"
+        >
+          <FaCheck className="h-4 w-4" />
+        </Button>
+        {/* reload button */}
+        {type === "tr" && (
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={handleReload}
+                  className="h-9 w-9  border dark:border-[#EFEFEF] hover:dark:bg-[#37404e]"
+                >
+                  <TbReload className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Tounsi {"=>"} تونسي </p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        )}
+      </div>
     </form>
   );
 };
