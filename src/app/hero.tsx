@@ -3,11 +3,13 @@ import { Button } from "@/components/ui/button";
 import { EnvelopeOpenIcon } from "@radix-ui/react-icons";
 import { MdDeleteOutline } from "react-icons/md";
 import { useLocation } from "react-router-dom";
-import { LuPencil } from "react-icons/lu";
+// import { LuPencil } from "react-icons/lu";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import TextareaForm from "./textAreaForm";
+// import TextareaForm from "./textAreaForm";
 import { toast } from "@/hooks/use-toast";
 import { Separator } from "@/components/ui/separator";
+import TrTextSection from "./trTextSection";
+import OrTextSection from "./orTextSection";
 
 const Hero = () => {
   const [data, setData] =
@@ -18,12 +20,13 @@ const Hero = () => {
 
   const [modOr, setModOr] = useState(false);
   const [modTr, setModTr] = useState(false);
+  const [modTn, setModTn] = useState(false);
   const location = useLocation();
   const user = location.state?.user || "Guest";
   const [currentIndex, setCurrentIndex] = useState(0); // To track the current row
   const [confirmButtonDisabled, setConfirmButtonDisabled] = useState(false);
   const [deleteButtonDisabled, setDeleteButtonDisabled] = useState(false);
-  const [tnText, setTnText] = useState("عسلاما");
+  const [tnText, setTnText] = useState("اسليما چهناهويليك");
 
   // Load data from JSON file
   const fetchData = async () => {
@@ -94,16 +97,6 @@ const Hero = () => {
       alert("No more rows left to display");
     }
   };
-  // ----------------------------------------------------------------------------------------------------------
-
-  // Function to handle text modification
-  function handleModOr() {
-    setModOr(true);
-  }
-  function handleModTr() {
-    setModTr(true);
-  }
-  // -------------------------------------------DELETE---------------------------------------------------------------
 
   // Simulated delete operation
   const handleDelete = async () => {
@@ -168,100 +161,32 @@ const Hero = () => {
         <h1 className="text-lg font-semibold">{user}</h1>
       </div>
 
-      {/* ------------------------------------------------------------------------------------------------------------- */}
-      {/* ------------------------------------------------------------------------------------------------------------- */}
-
       <div className="relative flex flex-col justify-center items-center rounded-lg border border-[#EFEFEF] shadow-md w-5/6 lg:w-3/6   px-6 py-4 lg:py-6">
         <p className="absolute top-[-30px] right-4">
           You corrected {counter} rows
         </p>
+
         {/* Original text */}
-        <div className="flex flex-col justify-center items-start gap-10  w-full">
-          <h1 className="scroll-m-20 text-lg md:text-2xl font-extrabold tracking-tight lg:text-3xl">
-            Original Text :
-          </h1>
-          <div className="flex justify-between gap-4 px-2 items-center  w-full ">
-            <div className="w-full">
-              {!modOr && (
-                <p className="text-muted-foreground text-lg h-[60px] overflow-y-auto  ">
-                  {orText}
-                </p>
-              )}
-              {modOr && (
-                <TextareaForm
-                  type="or"
-                  Text={orText}
-                  setOrText={setOrText}
-                  setModOr={setModOr}
-                  setTnText={setTnText}
-                />
-              )}
-            </div>
-            {!modOr && (
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={handleModOr}
-                className="h-9 w-9  border dark:border-[#EFEFEF] hover:dark:bg-[#37404e]"
-              >
-                <LuPencil className="h-4 w-4" />
-              </Button>
-            )}
-          </div>
-        </div>
+        <OrTextSection
+          modOr={modOr}
+          orText={orText}
+          setOrText={setOrText}
+          setModOr={setModOr}
+        />
         <Separator className=" w-full dark:bg-[#37404e] my-6" />
 
-        {/* ------------------------------------------------------------------------------------------------------------- */}
-        {/* ------------------------------------------------------------------------------------------------------------- */}
-
         {/* Translated text */}
-        <div className="flex flex-col justify-center items-start gap-10  w-full">
-          <h1 className="scroll-m-20 text-lg md:text-2xl font-extrabold tracking-tight lg:text-3xl">
-            Translated Text :
-          </h1>
-          <div className="flex justify-between gap-4 px-2 items-center  w-full  ">
-            <div className="w-full">
-              {!modTr && (
-                <div className="flex flex-col w-full ">
-                  <p className="text-muted-foreground text-lg  h-[60px] overflow-y-auto ">
-                    {trText}
-                  </p>
-                  <p className="text-muted-foreground mr-2  text-right ">
-                    {tnText}
-                  </p>
-                </div>
-              )}
-              {modTr && (
-                <div className="flex flex-col w-full   gap-2">
-                  <TextareaForm
-                    type="tr"
-                    Text={trText}
-                    setOrText={setTrText}
-                    setModOr={setModTr}
-                    setTnText={setTnText}
-                  />
-                  <p className="text-muted-foreground mr-16  text-right ">
-                    {tnText}
-                  </p>
-                </div>
-              )}
-            </div>
-            {!modTr && (
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={handleModTr}
-                className="h-9 w-9   border dark:border-[#EFEFEF] hover:dark:bg-[#37404e]"
-              >
-                <LuPencil className="h-4 w-4" />
-              </Button>
-            )}
-          </div>
-        </div>
+        <TrTextSection
+          modOr={modTr}
+          modTn={modTn}
+          tnText={tnText}
+          orText={trText}
+          setOrText={setTrText}
+          setModOr={setModTr}
+          setTnText={setTnText}
+          setModTn={setModTn}
+        />
       </div>
-
-      {/* ------------------------------------------------------------------------------------------------------------- */}
-      {/* ------------------------------------------------------------------------------------------------------------- */}
 
       {/* Buttons */}
       <div className="flex  w-full justify-center items-center gap-6 md:gap-10 ">

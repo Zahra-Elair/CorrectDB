@@ -18,7 +18,6 @@ interface TextareaProps {
   Text: string;
   setOrText: (orText: string) => void;
   setModOr: (modOr: boolean) => void;
-  setTnText: (tnText: string) => void;
 }
 
 const TextareaForm: React.FC<TextareaProps> = ({
@@ -26,7 +25,6 @@ const TextareaForm: React.FC<TextareaProps> = ({
   Text,
   setOrText,
   setModOr,
-  setTnText,
 }) => {
   const [text, setText] = useState(Text);
 
@@ -38,51 +36,66 @@ const TextareaForm: React.FC<TextareaProps> = ({
     event.preventDefault();
     setOrText(text); // Call the parent state setter to update the original text
     setModOr(false);
+    console.log("submitting...");
   }
+
   function handleReload(event: React.FormEvent) {
     event.preventDefault();
-    setTnText("عسلامة");
+    console.log("reloading...");
+    setText("tarjma");
   }
 
   return (
-    <form className="w-full  flex gap-2 justify-between items-center  ">
+    <form className=" flex gap-2 justify-between items-center  ">
       <Textarea
         placeholder="..."
-        className="resize-none dark:border-[#EFEFEF] w-full "
+        className="resize-none dark:border-[#EFEFEF] w-full  "
         value={text} // Bind the state to the value prop
         onChange={handleChange} // Update the state on change
       />
 
       {/* buttons */}
-      <div className="flex flex-col gap-2">
+      <div>
         {/* submit button */}
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={handleSubmit}
-          className="h-9 w-9  border dark:border-[#EFEFEF] hover:dark:bg-[#37404e]"
-        >
-          <FaCheck className="h-4 w-4" />
-        </Button>
+        {(type === "tr" || type === "or") && (
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={handleSubmit}
+            className="h-9 w-9  border dark:border-[#EFEFEF] hover:dark:bg-[#37404e]"
+          >
+            <FaCheck className="h-4 w-4" />
+          </Button>
+        )}
         {/* reload button */}
-        {type === "tr" && (
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={handleReload}
-                  className="h-9 w-9  border dark:border-[#EFEFEF] hover:dark:bg-[#37404e]"
-                >
-                  <TbReload className="h-4 w-4" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Tounsi {"=>"} تونسي </p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+        {type === "tn" && (
+          <div className="flex gap-2">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={handleReload}
+                    className="h-9 w-9  border dark:border-[#EFEFEF] hover:dark:bg-[#37404e]"
+                  >
+                    <TbReload className="h-4 w-4" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Tounsi {"=>"} تونسي </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={handleSubmit}
+              className="h-9 w-9  border dark:border-[#EFEFEF] hover:dark:bg-[#37404e]"
+            >
+              <FaCheck className="h-4 w-4" />
+            </Button>
+          </div>
         )}
       </div>
     </form>
