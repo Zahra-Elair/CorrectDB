@@ -30,9 +30,9 @@ const TextareaForm: React.FC<TextareaProps> = ({
 }) => {
   const [text, setText] = useState(Text);
 
-  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setText(event.target.value);
-  };
+  // const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+  //   setText(event.target.value);
+  // };
 
   function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -50,18 +50,32 @@ const TextareaForm: React.FC<TextareaProps> = ({
 
   const [showKeyboard, setShowKeyboard] = useState(false);
 
-  const onChange = (input: string) => {
-    setText(input);
+  // const onChange = (input: string) => {
+  //   console.log(input);
+  //   // setText(text + input);
+  // };
+
+  const handleKeyPress = (button: string) => {
+    // console.log(text);
+    if (button === "{bksp}") {
+      setText(text.slice(0, -1));
+    } else if (button === "{space}") {
+      setText(text + " ");
+    } else {
+      setText(text + button);
+    }
   };
 
   return (
     <div className="relative">
       <form className=" flex gap-2 justify-between items-center  ">
         <Textarea
-          placeholder="..."
+          placeholder="اضغط هنا للكتابة..."
           className="resize-none dark:border-[#EFEFEF] w-full  "
           value={text} // Bind the state to the value prop
-          onChange={handleChange} // Update the state on change
+          onChange={(e) => {
+            setText(e.target.value);
+          }} // Update the state on change
           onFocus={() => setShowKeyboard(true)}
         />
 
@@ -113,14 +127,9 @@ const TextareaForm: React.FC<TextareaProps> = ({
       <div className="absolute w-full bottom-[-400%] dark:text-black">
         {showKeyboard && (
           <Keyboard
-            onChange={onChange}
+            // onChange={onChange}
             input={text}
-            onKeyPress={(button) => {
-              console.log("key pressed = ", text);
-              if (button === "{bksp}") {
-                setText(text.slice(0, -1));
-              }
-            }}
+            onKeyPress={handleKeyPress}
             layout={{
               default: [
                 "1 2 3 4 5 6 7 8 9 0",
