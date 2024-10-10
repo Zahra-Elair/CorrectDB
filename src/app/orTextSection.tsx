@@ -19,7 +19,7 @@ const OrTextSection: React.FC<orTextSectionProps> = ({
   return (
     <div className="flex flex-col justify-center items-start gap-10  w-full">
       <h1 className="scroll-m-20 text-lg md:text-2xl font-extrabold tracking-tight lg:text-3xl">
-        Original Text :
+        English Text :
       </h1>
       <div className="flex justify-between gap-4 px-2 items-center  w-full ">
         <div className="w-full">

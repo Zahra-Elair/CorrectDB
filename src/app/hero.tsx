@@ -14,8 +14,8 @@ import OrTextSection from "./orTextSection";
 const Hero = () => {
   const [data, setData] =
     useState<{ original: string; translated: string }[]>(); // Store the entire data set
-  const [orText, setOrText] = useState(""); // Original text
-  const [trText, setTrText] = useState(""); // Translated text
+  const [orText, setOrText] = useState("Hello, how are you"); // Original text
+  const [trText, setTrText] = useState("Aslema, chnahwelek"); // Translated text
   const [counter, setCounter] = useState(0); // personal counter
 
   const [modOr, setModOr] = useState(false);
