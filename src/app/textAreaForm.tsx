@@ -70,13 +70,15 @@ const TextareaForm: React.FC<TextareaProps> = ({
     <div className="relative">
       <form className=" flex gap-2 justify-between items-center  ">
         <Textarea
-          placeholder="اضغط هنا للكتابة..."
+          placeholder="..."
           className="resize-none dark:border-[#EFEFEF] w-full  "
           value={text} // Bind the state to the value prop
           onChange={(e) => {
             setText(e.target.value);
           }} // Update the state on change
-          onFocus={() => setShowKeyboard(true)}
+          onFocus={() => {
+            if (type === "tn") setShowKeyboard(true);
+          }}
         />
 
         {/* buttons */}
