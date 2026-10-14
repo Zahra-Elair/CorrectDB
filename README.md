@@ -1,50 +1,38 @@
-# React + TypeScript + Vite
+# CorrectDB
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**The corrections front end for [Tunispeak](https://zahra-elair-portfolio.vercel.app/projects/tunispeak), a Tunisian Arabic and English translation platform.**
 
-Currently, two official plugins are available:
+Tunispeak's translation model is trained on pairs of English and Tunisian Arabic expressions. CorrectDB is the review tool used to clean that dataset: a reviewer goes through the entries one by one and confirms, modifies or deletes each pair, so the model learns from accurate, natural Tunisian Arabic.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## Expanding the ESLint configuration
+- **Review flow.** Each entry shows the English text and its Tunisian translation. The reviewer confirms it as correct, edits either side, or deletes it, then moves on to the next entry.
+- **Tunisian Arabic in two scripts.** Translations can be reviewed in Latin script (as Tunisians often type it) and in Arabic script, with an on-screen keyboard for entering Arabic text.
+- **Reviewer selection.** Reviewers pick their name before starting, so each correction can be attributed.
+- **Light and dark themes.**
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Tech stack
 
-- Configure the top-level `parserOptions` property like this:
+React 18 · TypeScript · Vite · Tailwind CSS · shadcn/ui (Radix UI) · React Hook Form · Zod · React Router · react-simple-keyboard
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Run locally
+
+```bash
+npm install
+npm run dev
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+Then open http://localhost:5173.
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+In this repository, entries are loaded from `data.json`, a small sample of the dataset, and submissions are shown as a confirmation message. The connection to the production dataset is not included.
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+Other scripts: `npm run build`, `npm run preview`, `npm run lint`.
+
+## Related
+
+- **Tunispeak:** the translation platform this tool feeds, built on a fine-tuned AraT5 model. [Case study](https://zahra-elair-portfolio.vercel.app/projects/tunispeak)
+- **[CorrectDB-admin](https://github.com/Zahra-Elair/CorrectDB-admin):** the admin dashboard.
+
+## Author
+
+Built by [Zahra Elair](https://zahra-elair-portfolio.vercel.app), AI Software Engineer.
